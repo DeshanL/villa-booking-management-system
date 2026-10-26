@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="nav">
+        <h2>Admin Dashboard</h2>
+        <a href="index.html">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="form-box">
+            <h3>Add New Product</h3>
+            <div class="input-row">
+                <input type="text" id="pName" placeholder="Product Name" required>
+                <input type="text" id="pBarcode" placeholder="Barcode">
+                <input type="text" id="pCategory" placeholder="Category (e.g., Electronics, Food)">
+                <input type="number" id="pPrice" placeholder="Price" min="0" step="0.01" required>
+                <input type="number" id="pQty" placeholder="Quantity" min="0" required>
+            </div>
+            <div class="button-row">
+                <button id="saveBtn">Save Product</button>
+            </div>
+        </div>
+
+        <h3>Current Inventory</h3>
+        <table>
+            <thead>
+                <tr><th>Name</th><th>Barcode</th><th>Category</th><th>Price</th><th>Qty</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="adminTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Product</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editId">
+                <div class="input-row">
+                    <input type="text" id="editName" placeholder="Product Name" required>
+                    <input type="text" id="editBarcode" placeholder="Barcode">
+                    <input type="text" id="editCategory" placeholder="Category">
+                    <input type="number" id="editPrice" placeholder="Price" min="0" step="0.01" required>
+                    <input type="number" id="editQty" placeholder="Quantity" min="0" required>
+                </div>
+                <div class="button-row">
+                    <button id="updateBtn" style="background: #007bff;">Update Product</button>
+                    <button id="cancelBtn" style="background: #6c757d; margin-left: 10px;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderers/admin.js"></script>
+</body>
+</html>

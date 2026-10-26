@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Villa Booking</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f4f7f6;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 15px;
+            color: #ecf0f1;
+            text-decoration: none;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .menu-item:hover {
+            background: #34495e;
+        }
+
+        .menu-item.active {
+            background: #3498db;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .card .number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Villa Grid Styles tailored for dashboard content */
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .villa-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .villa-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            /* Slightly stronger border */
+            position: relative;
+            display: flex;
+            /* Make it flex to organize vertically */
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .villa-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #3498db;
+            /* Highlight border on hover */
+        }
+
+        /* Image styles removed as requested */
+
+        .villa-info {
+            padding: 25px;
+            /* Increased padding for better spacing without image */
+        }
+
+        .villa-info h3 {
+            margin: 0 0 8px;
+            font-size: 1.4rem;
+            /* Larger title */
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .room-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            border-bottom: 1px solid #eee;
+            /* Separator */
+            padding-bottom: 15px;
+        }
+
+        .price-tag {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .price-tag span {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #95a5a6;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-available {
+            background: #e8f8f5;
+            color: #2ecc71;
+        }
+
+        .status-booked {
+            background: #fdedec;
+            color: #e74c3c;
+        }
+
+        .btn-book {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-book:hover {
+            background: linear-gradient(135deg, #2980b9, #2573a7);
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>Freedom Villa</h2>
+        <a href="#" class="menu-item active" onclick="switchView('villas', this)">Home</a>
+        <a href="#" class="menu-item" onclick="switchView('bookings', this)">Bookings</a>
+        <br><br>
+        <a href="#" onclick="logout()" class="menu-item" style="background: #c0392b;">Logout</a>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <h1>User Dashboard</h1>
+            <div>Welcome, User</div>
+        </div>
+
+        <!-- VIEWS -->
+        <div id="view-villas">
+
+            <!-- SEARCH BAR (Now inside Home View) -->
+            <div
+                style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label
+                        style="display: block; margin-bottom: 8px; color: #7f8c8d; font-weight: 500; font-size: 0.9rem;">Search
+                        Rooms</label>
+                    <input type="text" id="searchText" placeholder="Room Name or Number"
+                        style="width: 100%; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; box-sizing: border-box; font-size: 1rem; transition: 0.3s;">
+                </div>
+                <div>
+                    <label
+                        style="display: block; margin-bottom: 8px; color: #7f8c8d; font-weight: 500; font-size: 0.9rem;">Check-In</label>
+                    <input type="date" id="searchCheckIn"
+                        style="padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-family: inherit;">
+                </div>
+                <div>
+                    <label
+                        style="display: block; margin-bottom: 8px; color: #7f8c8d; font-weight: 500; font-size: 0.9rem;">Check-Out</label>
+                    <input type="date" id="searchCheckOut"
+                        style="padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-family: inherit;">
+                </div>
+                <button onclick="loadVillas()"
+                    style="padding: 12px 30px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; height: 46px; font-weight: 600; transition: background 0.3s;">
+                    Check Availability
+                </button>
+            </div>
+
+            <h2 class="section-title">Available Rooms</h2>
+            <div class="villa-grid" id="villaGrid">
+                <div style="text-align: center; width: 100%; color: #777;">Loading rooms...</div>
+            </div>
+        </div>
+
+        <div id="view-bookings" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 class="section-title" style="margin: 0;">My Bookings</h2>
+                <button onclick="downloadMyBookingsPDF()"
+                    style="padding: 12px 20px; background: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    📄 Download Ongoing Bookings PDF
+                </button>
+            </div>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 1px solid #eee;">
+                            <th style="padding: 10px;">Room</th>
+                            <th style="padding: 10px;">Check-In</th>
+                            <th style="padding: 10px;">Check-Out</th>
+                            <th style="padding: 10px;">Type</th>
+                            <th style="padding: 10px;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myBookingsList">
+                        <tr>
+                            <td colspan="5" style="padding: 20px; text-align: center;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; width: 400px; max-width: 90%;">
+            <h2 style="margin-top: 0; color: #2c3e50;">Book Room <span id="modalRoomNumber"></span></h2>
+
+            <form id="bookingForm">
+                <input type="hidden" id="selectedRoomId">
+                <input type="hidden" id="selectedRoomNumber">
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #666;">Guest Name</label>
+                    <input type="text" id="guestName" required
+                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #666;">Check-In Date</label>
+                    <input type="date" id="checkIn" required
+                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #666;">Check-Out Date</label>
+                    <input type="date" id="checkOut" required
+                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; color: #666;">Room Options</label>
+                    <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                        <!-- A/C Selection (Mutually Exclusive) -->
+                        <div style="display: flex; gap: 10px;">
+                            <label style="cursor: pointer; display: flex; align-items: center;">
+                                <input type="radio" name="acType" value="A/C" checked required> <span
+                                    style="margin-left: 5px;">A/C</span>
+                            </label>
+                            <label style="cursor: pointer; display: flex; align-items: center;">
+                                <input type="radio" name="acType" value="Non A/C"> <span style="margin-left: 5px;">Non
+                                    A/C</span>
+                            </label>
+                        </div>
+
+                        <!-- Divider -->
+                        <div style="width: 1px; height: 20px; background: #ddd;"></div>
+
+                        <!-- B/B Add-on -->
+                        <label style="cursor: pointer; display: flex; align-items: center;">
+                            <input type="checkbox" id="bbOption"> <span style="margin-left: 5px; font-weight: 500;">Add
+                                B/B</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; color: #666;">Room Price</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="roomPrice" placeholder="Price" required
+                            style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+                        <select id="currency"
+                            style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: white;">
+                            <option value="$">USD ($)</option>
+                            <option value="€">EUR (€)</option>
+                            <option value="Rs">LKR (Rs)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; color: #666;">Voucher Number</label>
+                    <input type="text" id="voucherNumber"
+                        style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" onclick="closeBookingModal()"
+                        style="padding: 10px 20px; border: 1px solid #ddd; background: white; border-radius: 5px; cursor: pointer;">Cancel</button>
+                    <button type="submit"
+                        style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">Book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        function logout() {
+            ipcRenderer.send('logout');
+        }
+
+        // Modal Logic
+        function openBookingModal(room) {
+            document.getElementById('bookingModal').style.display = 'flex';
+            document.getElementById('modalRoomNumber').innerText = '#' + room.number;
+            document.getElementById('selectedRoomId').value = room.id;
+            document.getElementById('selectedRoomNumber').value = room.number;
+
+            // Pre-fill dates from search if available
+            const searchIn = document.getElementById('searchCheckIn').value;
+            const searchOut = document.getElementById('searchCheckOut').value;
+            if (searchIn) document.getElementById('checkIn').value = searchIn;
+            if (searchOut) document.getElementById('checkOut').value = searchOut;
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.getElementById('bookingForm').reset();
+        }
+
+        // Handle Form Submit
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Construct Room Type String
+            const acType = document.querySelector('input[name="acType"]:checked').value;
+            const isBB = document.getElementById('bbOption').checked;
+            const finalRoomType = isBB ? `${acType} + B/B` : acType;
+
+            const booking = {
+                roomId: document.getElementById('selectedRoomId').value,
+                roomNumber: document.getElementById('selectedRoomNumber').value,
+                guestName: document.getElementById('guestName').value,
+                checkIn: document.getElementById('checkIn').value,
+                checkOut: document.getElementById('checkOut').value,
+                roomType: finalRoomType,
+                roomPrice: document.getElementById('roomPrice').value,
+                currency: document.getElementById('currency').value,
+                voucherNumber: document.getElementById('voucherNumber').value
+            };
+
+            const result = await ipcRenderer.invoke('add-booking', booking);
+
+            if (result.success) {
+                alert("Booking Successful!");
+                closeBookingModal();
+                loadVillas(); // Refresh availability
+            } else {
+                alert("Booking Failed: " + result.error);
+            }
+        });
+
+        async function loadVillas() {
+            try {
+                const searchText = document.getElementById('searchText').value;
+                const checkIn = document.getElementById('searchCheckIn').value;
+                const checkOut = document.getElementById('searchCheckOut').value;
+
+                // Validate dates if trying to check availability
+                if ((checkIn && !checkOut) || (!checkIn && checkOut)) {
+                    alert("Please select both Check-In and Check-Out dates to check availability.");
+                    return;
+                }
+
+                if (checkIn && checkOut && checkOut <= checkIn) {
+                    alert("Check-Out date must be after Check-In date.");
+                    return;
+                }
+
+                let rooms;
+                if (checkIn && checkOut) {
+                    rooms = await ipcRenderer.invoke('check-availability', { checkIn, checkOut, searchText });
+                } else {
+                    // Fallback to getting all rooms if no dates (but typically should prevent booking then)
+                    // For now, let's just get all rooms if no dates selected, but we could improve this UX
+                    // Or reuse get-rooms but filtered by text manually.
+                    // Let's rely on check-availability handling empty dates gracefully or just use get-rooms
+
+                    // Actually, if just text search, we can still use get-rooms and filter,
+                    // but get-rooms doesn't support filter.
+                    // Let's just use check-availability with empty dates = return all (minus overlaps if any? no dates = no overlap).
+                    rooms = await ipcRenderer.invoke('check-availability', { checkIn: '', checkOut: '', searchText });
+                }
+
+                const grid = document.getElementById('villaGrid');
+                grid.innerHTML = '';
+
+                if (rooms.length === 0) {
+                    grid.innerHTML = '<div style="text-align: center; width: 100%; color: #777;">No rooms available for selected criteria.</div>';
+                    return;
+                }
+
+                // Filter to ONLY show available rooms as requested
+                const availableRooms = rooms.filter(room => room.status === 'Available');
+
+                if (availableRooms.length === 0) {
+                    grid.innerHTML = '<div style="text-align: center; width: 100%; color: #777;">No rooms available for selected criteria.</div>';
+                    return;
+                }
+
+                availableRooms.forEach(room => {
+                    const statusClass = 'status-available'; // Already filtered
+
+                    const card = document.createElement('div');
+                    card.className = 'villa-card';
+                    card.innerHTML = `
+                        <div class="villa-info">
+                            <div class="room-meta">
+                                <span>Room #${room.number}</span>
+                                <span class="status-badge ${statusClass}">${room.status}</span>
+                            </div>
+                            <h3>${room.name}</h3>
+                            <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                                <div class="price-tag">$villa <span>/ night</span></div>
+                            </div>
+                            <button onclick='openBookingModal(${JSON.stringify(room)})' class="btn-book">Book Now</button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Failed to load rooms:", err);
+            }
+        }
+
+        // TAB SWITCHING
+        function switchView(view, element) {
+            document.getElementById('view-villas').style.display = (view === 'villas') ? 'block' : 'none';
+            document.getElementById('view-bookings').style.display = (view === 'bookings') ? 'block' : 'none';
+
+            // Update sidebar highlighting
+            if (element) {
+                document.querySelectorAll('.sidebar .menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                element.classList.add('active');
+            }
+
+            if (view === 'bookings') loadMyBookings();
+        }
+
+        async function loadMyBookings() {
+            const bookings = await ipcRenderer.invoke('get-bookings');
+            const tbody = document.getElementById('myBookingsList');
+            tbody.innerHTML = '';
+
+            if (bookings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="padding: 20px; text-align: center;">No bookings found.</td></tr>';
+                return;
+            }
+
+            bookings.forEach(b => {
+                const tr = document.createElement('tr');
+                let statusColor = '#f39c12'; // pending
+                let statusText = 'Pending';
+
+                if (b.status === 'calculated') {
+                    statusColor = '#27ae60';
+                    statusText = 'Confirmed';
+                }
+
+                tr.innerHTML = `
+                    <td style="padding: 10px;">#${b.roomNumber} (${b.roomName || 'Villa'})</td>
+                    <td style="padding: 10px;">${b.checkIn}</td>
+                    <td style="padding: 10px;">${b.checkOut}</td>
+                    <td style="padding: 10px;">${b.roomType}</td>
+                    <td style="padding: 10px;"><span style="background: ${statusColor}20; color: ${statusColor}; padding: 3px 8px; border-radius: 10px; font-size: 0.8rem;">${statusText}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Initial load highlighting (Home is already active by default in HTML)
+        // No explicit hijacking needed as we use onclick in HTML now
+
+        // Pre-fill dates on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            const tomorrowDate = new Date();
+            tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+            const tomorrow = tomorrowDate.toISOString().split('T')[0];
+
+            document.getElementById('searchCheckIn').value = today;
+            document.getElementById('searchCheckOut').value = tomorrow;
+        });
+
+        loadVillas();
+
+        // Aggressive focus fix for user homepage
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.click();
+                document.body.focus();
+            }, 500);
+            setTimeout(() => {
+                document.body.click();
+            }, 1500);
+        });
+
+        // Download My Bookings PDF
+        async function downloadMyBookingsPDF() {
+            try {
+                const bookings = await ipcRenderer.invoke('get-bookings');
+                const today = new Date().toISOString().split('T')[0];
+
+                // Filter ongoing and future bookings
+                const ongoingBookings = bookings.filter(b => {
+                    return b.status !== 'cancelled' && b.checkOut >= today;
+                });
+
+                if (ongoingBookings.length === 0) {
+                    alert('No ongoing or future bookings found.');
+                    return;
+                }
+
+                // Generate PDF HTML
+                const title = 'My Ongoing & Future Bookings';
+                const htmlTable = `
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Guest</th>
+                            <th>Voucher</th>
+                            <th>Room</th>
+                            <th>Room Options</th>
+                            <th>Price</th>
+                            <th>Dates</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${ongoingBookings.map(b => `
+                            <tr>
+                                <td>${b.id ? b.id : '-'}</td>
+                                <td>${b.guestName ? b.guestName : '-'}</td>
+                                <td>${b.voucherNumber ? b.voucherNumber : '-'}</td>
+                                <td>${b.roomNumber ? '#' + b.roomNumber : '-'}</td>
+                                <td>${b.roomType ? b.roomType : '-'}</td>
+                                <td>${b.roomPrice && b.currency ? b.roomPrice + ' ' + b.currency : (b.roomPrice ? b.roomPrice : '-')}</td>
+                                <td>${b.checkIn && b.checkOut ? b.checkIn + ' → ' + b.checkOut : '-'}</td>
+                                <td>${b.status === 'calculated' ? 'Confirmed' : 'Pending'}</td>
+                            </tr>`).join('')}
+                    </tbody>`;
+
+                const html = `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            body { font-family: Arial, sans-serif; padding: 40px; }
+                            h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                            th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 12px; }
+                            th { background: #3498db; color: white; font-weight: bold; }
+                            tr:nth-child(even) { background: #f9f9f9; }
+                            .footer { text-align: center; margin-top: 30px; font-size: 11px; color: #888; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>${title}</h1>
+                        <p style="text-align: center; color: #666;">Generated on ${new Date().toLocaleDateString()}</p>
+                        <table>${htmlTable}</table>
+                        <div class="footer">Freedom Villa Booking System</div>
+                    </body>
+                    </html>`;
+
+                // Send to main process to generate PDF
+                const result = await ipcRenderer.invoke('save-pdf', {
+                    html: html,
+                    filename: `My_Bookings_${new Date().toISOString().split('T')[0]}.pdf`
+                });
+
+                if (result.success) {
+                    alert('✅ PDF downloaded successfully!');
+                } else {
+                    alert('❌ Failed to save PDF: ' + result.error);
+                }
+            } catch (err) {
+                console.error('Error downloading PDF:', err);
+                alert('❌ Error: ' + err.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

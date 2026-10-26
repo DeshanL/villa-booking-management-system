@@ -1,0 +1,108 @@
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Electron
+# =========================
+dist/
+out/
+release/
+build/
+
+# Electron Builder
+electron-builder.env
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.iml
+
+# =========================
+# Cache / Temp
+# =========================
+.cache/
+.temp/
+.tmp/
+*.swp
+*.swo
+
+# =========================
+# Web Bundlers
+# =========================
+.vite/
+.parcel-cache/
+.next/
+.nuxt/
+.angular/
+
+# =========================
+# Testing
+# =========================
+coverage/
+
+# =========================
+# Electron Native Builds
+# =========================
+*.exe
+*.dmg
+*.pkg
+*.AppImage
+*.deb
+*.rpm
+*.snap
+
+# =========================
+# Misc
+# =========================
+*.bak
+*.old
+
+# =========================
+# Database
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# Local dev/test scripts
+# =========================
+verify_*.js
+inspect_db.js
+cleanup_test_data.js
+test_sqlite_migration.js
+db_output.txt

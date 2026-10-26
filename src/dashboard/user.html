@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock View</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="nav">
+        <h2>User Dashboard</h2>
+        <a href="index.html">Logout</a>
+    </div>
+
+    <div class="container">
+        <div class="form-box">
+            <h3>Product Search</h3>
+            <div class="input-row">
+                <input type="text" id="searchInput" placeholder="🔍 Scan Barcode or Search by Name or Category..." autofocus>
+            </div>
+        </div>
+
+        <h3>Current Products</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Barcode</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="userTable"></tbody>
+        </table>
+
+        <div id="noResults" style="text-align:center; display:none; color:#666; margin-top:10px; padding: 20px;">
+            <p>No products found. Try a different search term.</p>
+        </div>
+    </div>
+
+    <script src="renderers/user.js"></script>
+</body>
+</html>
